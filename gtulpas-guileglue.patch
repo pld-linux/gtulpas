@@ -1,0 +1,29 @@
+--- src/guileglue.c	2003/01/13 13:38:37	1.1
++++ src/guileglue.c	2003/01/13 13:53:57
+@@ -1931,7 +1931,7 @@
+ static int
+ glue_enum_item_cmp_by_symbol (const void *p1, const void *p2)
+ {
+-  return (((glue_enum_item *) p1) -> symbol) - (((glue_enum_item *) p2) -> symbol);
++  return (SCM_UNPACK(((glue_enum_item *) p1) -> symbol) - SCM_UNPACK(((glue_enum_item *) p2) -> symbol));
+ }
+ 
+ static int
+@@ -1943,7 +1943,7 @@
+ static int
+ glue_enum_item_key_symbol (const void *p1, const void *p2)
+ {
+-  return  (* ((SCM *) p1)) - (((glue_enum_item *) p2) -> symbol);
++  return  (SCM_UNPACK(* ((SCM *) p1)) - SCM_UNPACK(((glue_enum_item *) p2) -> symbol));
+ }
+ 
+ static int
+@@ -2071,7 +2071,7 @@
+   else
+     port = scm_current_output_port ();
+ 
+-  stack = scm_fluid_ref (SCM_CDR (scm_the_last_stack_fluid));
++  stack = scm_fluid_ref (SCM_CDR (scm_the_last_stack_fluid_var));
+ 
+   scm_display_backtrace (stack, port, SCM_UNDEFINED, SCM_UNDEFINED);
+   scm_display_error (stack,port,

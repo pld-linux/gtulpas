@@ -1,0 +1,19 @@
+--- src/Makefile.am	Mon Feb 28 20:14:22 2000
++++ src/Makefile.am	Tue Jul 30 15:25:08 2002
+@@ -46,4 +46,4 @@
+ 	c_disable.xpm
+ 
+ %.x: %.c
+-	guile-snarf $(INCLUDES) $(DEFS) $(CPPFLAGS) $(CFLAGS) $< > tmpf && mv tmpf $@     
++	guile-snarf $< $(INCLUDES) $(DEFS) $(CPPFLAGS) $(CFLAGS) > tmpf && mv tmpf $@     
+--- src/Makefile.in	Tue Feb 29 17:25:38 2000
++++ src/Makefile.in	Tue Jul 30 16:39:47 2002
+@@ -394,7 +394,7 @@
+ guileglue.o: guileglue.x
+ 
+ %.x: %.c
+-	guile-snarf $(INCLUDES) $(DEFS) $(CPPFLAGS) $(CFLAGS) $< > tmpf && mv tmpf $@     
++	guile-snarf $< $(INCLUDES) $(DEFS) $(CPPFLAGS) $(CFLAGS) > tmpf && mv tmpf $@     
+ 
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
+ # Otherwise a system limit (for SysV at least) may be exceeded.

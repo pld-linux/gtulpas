@@ -1,0 +1,19 @@
+--- src/poolfeedgl.c
++++ src/poolfeedgl.c
+@@ -1148,9 +1148,13 @@
+ render_score_ball (Game *g, int ball_id, int width, int height,
+ 		   GdkPixmap **pixmap, GdkBitmap **bitmap)
+ {
+-  static int		attrib [] = { GDK_GL_USE_GL,
+-				      GDK_GL_RGBA,
+-				      GDK_GL_NONE};
++  static int		attrib [] = {
++        GDK_GL_USE_GL,
++	GDK_GL_RGBA,
++	GDK_GL_DOUBLEBUFFER,
++	GDK_GL_DEPTH_SIZE, 1,
++	GDK_GL_NONE
++  };
+   static GLfloat	light_pos [4] = { 0,1,1, 0};
+ 
+ #define M 10.0

@@ -1,0 +1,147 @@
+--- scheme/init.scm
++++ scheme/init.scm	2001/01/05 10:07:37
+@@ -3,16 +3,16 @@
+ 	;;; turn on line numbers when reading files (debugging only)
+ (and tulpas-developers-mode (read-enable 'positions))
+ 
+-(define tulpas-rules-dir (string tulpas-data-dir "/rules"))
++(define tulpas-rules-dir (string-append tulpas-data-dir "/rules"))
+ 
+ (define user-home (getenv "HOME"))
+-(define tulpas-user-dir (string user-home "/.gtulpas"))
+-(define tulpas-user-rules-dir (string tulpas-user-dir "/rules"))
+-(define tulpas-user-init (string tulpas-user-dir "/init-user.scm"))
++(define tulpas-user-dir (string-append user-home "/.gtulpas"))
++(define tulpas-user-rules-dir (string-append tulpas-user-dir "/rules"))
++(define tulpas-user-init (string-append tulpas-user-dir "/init-user.scm"))
+ 
+ (set! %load-path
+       (cons tulpas-user-dir
+-	    (cons (string tulpas-data-dir "/scheme")
++	    (cons (string-append tulpas-data-dir "/scheme")
+ 		  %load-path)))
+ 
+ (load "utilities.scm")
+--- scheme/utilities.scm
++++ scheme/utilities.scm	2001/01/05 09:50:49
+@@ -216,7 +216,7 @@
+ 	     (safe-call
+ 	       (lambda ()
+ 		 (DebugDisplay "loading " dirname "/" filename)
+-		 (load (string dirname "/" filename)))
++		 (load (string-append dirname "/" filename)))
+ 	       (lambda ()
+ 		 (Display "-!-!-!- Can not load " filename " file -!-!-!-"))))
+ 	(load-game (readdir directory)))))))
+--- src/render.c
++++ src/render.c	2001/01/05 10:07:37
+@@ -14,7 +14,7 @@
+   -1, -1, -1, -1, -1, -1
+ };
+ 
+-static GLUtesselator *tesselator = NULL;
++static GLUtriangulatorObj *tesselator = NULL;
+ static GList	     *tess_garbage_list = NULL;
+ 
+ static GLUquadricObj *quadric [2] = {NULL, NULL};
+@@ -142,8 +142,8 @@
+   if (! tesselator)
+     tesselator = gluNewTess ();
+ 
+-  gluTessProperty (tesselator, GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_POSITIVE);
+-  gluTessNormal (tesselator, 0,0, 1);
++//  gluTessProperty (tesselator, GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_POSITIVE);
++//  gluTessNormal (tesselator, 0,0, 1);
+ 
+   gluTessCallback (tesselator, GLU_TESS_BEGIN, 
+ 				 (GLvoid (*) ()) &tess_begin_cb);
+--- src/table-render.c
++++ src/table-render.c	2001/01/05 10:07:37
+@@ -315,7 +315,7 @@
+     glCallList (outline_LID);
+   else
+     {
+-      GLUtesselator	*tess;
++      GLUtriangulatorObj	*tess;
+       dbl		*vertex, *vptr, *dptr;
+       int		i;
+ 
+@@ -329,8 +329,7 @@
+       glColor3dv(pool_table.outer_skin->color1);
+       glNormal3dv (render_up_vector);
+ 
+-      gluTessBeginPolygon (tess, NULL);
+-       gluTessBeginContour (tess);
++      gluBeginPolygon (tess);
+        for (i = 0, dptr = pool_table.outer_vertices; 
+ 	    i < pool_table.nof_outer_vertices;
+ 	    i++, dptr +=2, vptr += 3)
+@@ -341,8 +340,7 @@
+ 
+ 	   gluTessVertex (tess, vptr, vptr);
+ 	 }
+-       gluTessEndContour (tess);
+-       gluTessBeginContour (tess);
++       gluNextContour (tess,GLU_INTERIOR);
+        for (i = 0, dptr = (pool_table.vertices + 2 * (pool_table.nof_vertices - 1));
+ 	    i < pool_table.nof_vertices;
+ 	    i++, dptr -= 2, vptr += 3)
+@@ -353,8 +351,7 @@
+ 
+ 	   gluTessVertex (tess, vptr, vptr);
+ 	 }
+-       gluTessEndContour (tess);
+-      gluTessEndPolygon (tess);
++      gluEndPolygon (tess);
+ 
+       render_tesselator_finish (tess);
+       g_free (vertex);
+@@ -367,7 +364,7 @@
+ static void
+ render_table_ground (PoolViewGL *data)
+ {
+-  GLUtesselator *tess;
++  GLUtriangulatorObj *tess;
+ 
+   dbl		*dptr;
+   dbl		*vertex, *vptr;
+@@ -379,8 +376,7 @@
+   vertex = g_new (dbl, 3 * pool_table.nof_vertices);
+ 
+   glNormal3dv (render_up_vector);
+-  gluTessBeginPolygon (tess, NULL);
+-  gluTessBeginContour (tess);
++  gluBeginPolygon (tess);
+ 
+   for (i = pool_table.nof_vertices, dptr = pool_table.vertices, vptr = vertex;
+        i;
+@@ -393,7 +389,6 @@
+       gluTessVertex (tess, vptr, vptr);
+     }
+ 
+-  gluTessEndContour (tess);
+ 
+   if (pool_table.nof_holes != 0 && properties.glu_tesselator_ok)
+     {
+@@ -403,7 +398,7 @@
+ 	   i < pool_table.nof_holes; 
+ 	   i++, hole++)
+ 	{
+-	  gluTessBeginContour (tess);
++	  gluNextContour (tess, GLU_INTERIOR);
+ 
+ 	  vptr [X] = hole->p[X] + hole->radius;
+ 	  vptr [Y] = hole->p[Y] + hole->radius;
+@@ -429,11 +424,10 @@
+ 	  gluTessVertex (tess, vptr, vptr);
+ 	  vptr += 3;
+ 
+-	  gluTessEndContour (tess);
+ 	}
+     }
+ 
+-  gluTessEndPolygon (tess);
++  gluEndPolygon (tess);
+ 
+   render_tesselator_finish (tess);
+   g_free (vertex);

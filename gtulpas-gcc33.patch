@@ -1,0 +1,24 @@
+--- src/properties.c
++++ src/properties.c
+@@ -45,7 +45,7 @@
+ 	win  = NULL;
+ }
+ 
+-#define CH(x, flag)  if (properties.## x != temp_prop.## x) flag = 1;
++#define CH(x, flag)  if (properties. x != temp_prop. x) flag = 1;
+ 
+ static void
+ properties_apply ()
+@@ -186,10 +186,10 @@
+ 	return w;
+ }
+ 
+-#define ADDC(name, prop)          check = properties_check (_(name), &temp_prop.## prop); \
++#define ADDC(name, prop)          check = properties_check (_(name), &temp_prop. prop); \
+                                   gtk_box_pack_start (GTK_BOX (vbox), check, FALSE, FALSE, 0);
+ 
+-#define ADDR(name, val, prop)     radio = properties_radio (radio, _(name), val, &temp_prop.## prop); \
++#define ADDR(name, val, prop)     radio = properties_radio (radio, _(name), val, &temp_prop. prop); \
+                                   gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
+ 
+ void
