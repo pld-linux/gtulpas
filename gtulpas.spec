@@ -7,6 +7,7 @@ License:	GPL
 Group:		X11/Applications/Games
 Vendor:		SuSE GmbH, Nuernberg, Germany
 Source0:	http://www.suse.cz/gtulpas/%{name}-%{version}.tar.gz
+# Source0-md5:	cf208593998978c6c835e815508f20e7
 URL:		http://www.suse.cz/gtulpas/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 BuildRequires:	gnome-libs-devel
