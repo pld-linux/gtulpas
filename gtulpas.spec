@@ -1,15 +1,21 @@
 Summary:	Gnome Tulpas pool game
+Summary(pl):	Gnome Tulpas - gra w bilard
 Name:		gtulpas
 Version:	1.0.0
 Release:	0
 License:	GPL
-Autoreqprov:	on
-Vendor:		SuSE GmbH, Nuernberg, Germany
-Source0:	%{name}-%{version}.tar.gz
 Group:		X11/Applications/Games
 Group(de):	X11/Applikationen/Spiele
 Group(pl):	X11/Aplikacje/Gry
+Vendor:		SuSE GmbH, Nuernberg, Germany
+Source0:	http://www.suse.cz/gtulpas/%{name}-%{version}.tar.gz
+URL:		http://www.suse.cz/gtulpas/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+BuildRequires:	gnome-libs-devel
+BuildRequires:	OpenGL-devel
+BuildRequires:	gtkglarea-devel
+BuildRequires:	guile-devel
+Autoreqprov:	on
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
@@ -17,9 +23,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 Gnome Tulpas pool game.
 
-Authors:
-- -------- Tomas Bily <tomby@suse.cz> Jan Bily <bilyj@seznam.cz> Radek
-  Doulik <rodo@suse.cz> Daniel Skarda <0rfelyus@suse.cz>
+%description -l pl
+Gnome Tulpas - gra w bilard.
 
 %prep
 %setup -q
