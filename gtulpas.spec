@@ -1,20 +1,21 @@
-Vendor:		SuSE GmbH, Nuernberg, Germany
+Summary:	Gnome Tulpas pool game
 Name:		gtulpas
+Version:	1.0.0
 Release:	0
 License:	GPL
 Autoreqprov:	on
-Version:	1.0.0
-Summary:	Gnome Tulpas pool game
-Source0:	gtulpas-%{version}.tar.gz
-Group:		X11/Games
-Group(pl):	X11/Gry
+Vendor:		SuSE GmbH, Nuernberg, Germany
+Source0:	%{name}-%{version}.tar.gz
+Group:		X11/Applications/Games
+Group(de):	X11/Applikationen/Spiele
+Group(pl):	X11/Aplikacje/Gry
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
 
 %description
-Gnome Tulpas pool game
+Gnome Tulpas pool game.
 
 Authors:
 - -------- Tomas Bily <tomby@suse.cz> Jan Bily <bilyj@seznam.cz> Radek
@@ -24,15 +25,16 @@ Authors:
 %setup -q
 
 %build
-CFLAGS=${RPM_OPT_FLAGS} \
+CFLAGS="%{rpmcflags}" \
 ./configure --prefix=/opt/gnome %{_target_cpu}-suse-linux
+
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_prefix}/{lib,gtulpas},%{docdir}}
 %{__make} install prefix=$RPM_BUILD_ROOT/opt/gnome
-ln -s %{_datadir}/gnome/help/gtulpas/C $RPM_BUILD_ROOT%{docdir}/gtulpas/userdoc
+ln -sf %{_datadir}/gnome/help/gtulpas/C $RPM_BUILD_ROOT%{docdir}/gtulpas/userdoc
 %{?suse_check}
 
 %clean
