@@ -1,0 +1,38 @@
+--- gtulpas-1.0.0/Makefile.am.orig	Mon Feb 28 19:27:19 2000
++++ gtulpas-1.0.0/Makefile.am	Thu Jul 10 15:19:15 2003
+@@ -13,11 +13,11 @@
+ gtulpas_datadir=$(datadir)/gtulpas
+ 
+ install-data-local:
+-	$(mkinstalldirs) $(Gamesdir)
+-	$(INSTALL_DATA) $(srcdir)/gtulpas.desktop $(Gamesdir)/gtulpas.desktop
+-	$(mkinstalldirs) $(gtulpas_datadir)
+-	$(mkinstalldirs) $(gtulpas_datadir)/pics
+-	$(INSTALL_DATA) $(srcdir)/gfx/pics/*.png $(gtulpas_datadir)/pics/
+-	$(mkinstalldirs) $(datadir)/pixmaps
+-	$(INSTALL_DATA) $(srcdir)/gfx/icon/gtulpas1.png $(datadir)/pixmaps/gtulpas.png
++	$(mkinstalldirs) $(DESTDIR)$(Gamesdir)
++	$(INSTALL_DATA) $(srcdir)/gtulpas.desktop $(DESTDIR)$(Gamesdir)/gtulpas.desktop
++	$(mkinstalldirs) $(DESTDIR)$(gtulpas_datadir)
++	$(mkinstalldirs) $(DESTDIR)$(gtulpas_datadir)/pics
++	$(INSTALL_DATA) $(srcdir)/gfx/pics/*.png $(DESTDIR)$(gtulpas_datadir)/pics/
++	$(mkinstalldirs) $(DESTDIR)$(datadir)/pixmaps
++	$(INSTALL_DATA) $(srcdir)/gfx/icon/gtulpas1.png $(DESTDIR)$(datadir)/pixmaps/gtulpas.png
+ 
+--- gtulpas-1.0.0/src/Makefile.am.orig	Thu Jul 10 15:21:26 2003
++++ gtulpas-1.0.0/src/Makefile.am	Thu Jul 10 15:25:39 2003
+@@ -2,7 +2,7 @@
+ 
+ CLEANFILES = poolglue.x tmpf
+ 
+-INCLUDES += $(DEBUG_CFLAGS) -DG_LOG_DOMAIN=\"Tjulpas\" $(GUILE_CFLAGS) \
++INCLUDES = $(DEBUG_CFLAGS) -DG_LOG_DOMAIN=\"Tjulpas\" $(GUILE_CFLAGS) \
+            $(GTK_CFLAGS) $(GTKGL_CFLAGS) $(GNOME_CFLAGS) -DTULPAS_DATADIR=\"$(gtulpas_datadir)\"      \
+ 	   -DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
+            -DLOCALEDIR=\"$(datadir)/locale\"
+@@ -46,4 +46,4 @@
+ 	c_disable.xpm
+ 
+ %.x: %.c
+-	guile-snarf $< $(INCLUDES) $(DEFS) $(CPPFLAGS) $(CFLAGS) > tmpf && mv tmpf $@     
++	guile-snarf $< $(DEFAULT_INCLUDES) $(INCLUDES) $(DEFS) $(CPPFLAGS) $(CFLAGS) > tmpf && mv tmpf $@     
