@@ -31,7 +31,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_prefix}/{lib,gtulpas},%{docdir}}
-make install prefix=$RPM_BUILD_ROOT/opt/gnome
+%{__make} install prefix=$RPM_BUILD_ROOT/opt/gnome
 ln -s %{_datadir}/gnome/help/gtulpas/C $RPM_BUILD_ROOT%{docdir}/gtulpas/userdoc
 %{?suse_check}
 
