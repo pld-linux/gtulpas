@@ -8,14 +8,22 @@ Group:		X11/Applications/Games
 Vendor:		SuSE GmbH, Nuernberg, Germany
 Source0:	http://www.suse.cz/gtulpas/%{name}-%{version}.tar.gz
 # Source0-md5:	cf208593998978c6c835e815508f20e7
+Patch0:		%{name}-guileglue.patch
+Patch1:		%{name}-guile-snarf.patch
+Patch2:		%{name}-gcc33.patch
+Patch3:		%{name}-glx.patch
+Patch4:		%{name}-dif.patch
+Patch5:		%{name}-DESTDIR.patch
 URL:		http://www.suse.cz/gtulpas/
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-BuildRequires:	gnome-libs-devel
 BuildRequires:	OpenGL-devel
-BuildRequires:	gtkglarea-devel
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	gettext-devel
+BuildRequires:	gnome-libs-devel
+BuildRequires:	gtkglarea1-devel
 BuildRequires:	guile-devel
-Autoreqprov:	on
-
+BuildRequires:	libtool
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Gnome Tulpas pool game.
@@ -25,30 +33,40 @@ Gnome Tulpas - gra w bilard.
 
 %prep
 %setup -q
+%patch0 -p0
+%patch1 -p0
+%patch2 -p0
+%patch3 -p0
+%patch4 -p0
+%patch5 -p1
 
 %build
-CFLAGS="%{rpmcflags}" \
-./configure --prefix=/opt/gnome %{_target_cpu}-suse-linux
+%{__gettextize}
+%{__libtoolize}
+%{__aclocal}
+%{__autoconf}
+%{__autoheader}
+%{__automake}
+%configure
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_prefix}/{lib,gtulpas},%{docdir}}
-%{__make} install prefix=$RPM_BUILD_ROOT/opt/gnome
-ln -sf %{_datadir}/gnome/help/gtulpas/C $RPM_BUILD_ROOT%{docdir}/gtulpas/userdoc
-%{?suse_check}
+
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT \
+	Gamesdir=%{_applnkdir}/Games
+
+%find_lang %{name} --with-gnome
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc README ChangeLog
+%doc AUTHORS ChangeLog NEWS README TODO
 %attr(755,root,root) %{_bindir}/gtulpas
-%{_prefix}/gtulpas
-%{_datadir}/locale/cs/LC_MESSAGES/gtulpas.mo
-%{_datadir}/gnome/help/gtulpas
-%{_applnkdir}/Games/gtulpas.desktop
 %{_datadir}/gtulpas
+%{_applnkdir}/Games/gtulpas.desktop
 %{_pixmapsdir}/gtulpas.png
