@@ -26,7 +26,7 @@ Authors:
 %build
 CFLAGS=${RPM_OPT_FLAGS} \
 ./configure --prefix=/opt/gnome %{_target_cpu}-suse-linux
-make
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
