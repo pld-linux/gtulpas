@@ -15,8 +15,6 @@ BuildRequires:	gtkglarea-devel
 BuildRequires:	guile-devel
 Autoreqprov:	on
 
-%define		_prefix		/usr/X11R6
-%define		_mandir		%{_prefix}/man
 
 %description
 Gnome Tulpas pool game.
