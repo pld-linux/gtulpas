@@ -47,4 +47,4 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gnome/help/gtulpas
 %{_applnkdir}/Games/gtulpas.desktop
 %{_datadir}/gtulpas
-%{_datadir}/pixmaps/gtulpas.png
+%{_pixmapsdir}/gtulpas.png
