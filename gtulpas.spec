@@ -23,7 +23,6 @@ Source: gtulpas-%{version}.tar.gz
 Group:          X11/Games
 Prefix:         /opt/gnome
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Docdir:         %{docdir}/gnome
 
 %description
 Gnome Tulpas pool game
