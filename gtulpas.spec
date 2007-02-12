@@ -1,5 +1,5 @@
 Summary:	GNOME Tulpas pool game
-Summary(pl):	GNOME Tulpas - gra w bilard
+Summary(pl.UTF-8):   GNOME Tulpas - gra w bilard
 Name:		gtulpas
 Version:	1.0.0
 Release:	0
@@ -28,7 +28,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 GNOME Tulpas pool game.
 
-%description -l pl
+%description -l pl.UTF-8
 GNOME Tulpas - gra w bilard.
 
 %prep
