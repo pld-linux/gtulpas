@@ -18,7 +18,7 @@ URL:		http://www.suse.cz/gtulpas/
 BuildRequires:	OpenGL-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	gnome-libs-devel
 BuildRequires:	gtkglarea1-devel
 BuildRequires:	guile-devel
